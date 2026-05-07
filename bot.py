@@ -1,15 +1,16 @@
 import requests
 import time
 import datetime
+import os
 
 # ============================================================
-# CONFIGURACION - EDITÁ ESTOS VALORES
+# CONFIGURACION
 # ============================================================
-import os
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 CHAT_ID = "1867234680"
-CHECK_INTERVAL_MINUTES = 15  # cada cuántos minutos analiza
+CHECK_INTERVAL_MINUTES = 15
 # ============================================================
+
 # Estado interno del bot
 in_position = False
 buy_price = 0.0
@@ -98,9 +99,6 @@ def analyze():
 
     print(f"[{now}] BTC: ${price:,.2f} | RSI: {rsi:.1f} | EMA9: {ema9:,.0f} | EMA21: {ema21:,.0f} | EMA50: {ema50:,.0f} | Vol+: {volume_ok}")
 
-    # ---- LÓGICA DE SEÑALES ----
-
-    # Señal de COMPRA
     buy_signal = (
         not in_position and
         rsi < 40 and
@@ -109,14 +107,12 @@ def analyze():
         volume_ok
     )
 
-    # Señal de VENTA con ganancia
     sell_signal_profit = (
         in_position and
         profit_pct >= 1.5 and
         (rsi > 65 or ema9 < ema21)
     )
 
-    # Stop loss: salir si cae más del 2%
     sell_signal_stoploss = (
         in_position and
         profit_pct <= -2.0
@@ -188,7 +184,7 @@ def main():
         try:
             analyze()
             now = datetime.datetime.now()
-            if (now - last_heartbeat).seconds >= 86400:
+            if (now - last_heartbeat).total_seconds() >= 86400:
                 price = get_btc_price()
                 send_telegram(
                     f"💓 <b>Bot activo</b>\n\n"
@@ -200,3 +196,6 @@ def main():
         except Exception as e:
             print(f"Error en análisis: {e}")
         time.sleep(CHECK_INTERVAL_MINUTES * 60)
+
+if __name__ == "__main__":
+    main()
