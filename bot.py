@@ -168,6 +168,7 @@ def analyze():
         buy_price = 0.0
 
 def main():
+    global last_heartbeat
     print("=" * 50)
     print("Bot BTC Signal arrancado")
     print(f"Analizando cada {CHECK_INTERVAL_MINUTES} minutos")
@@ -179,12 +180,21 @@ def main():
         f"Indicadores: RSI, EMA9/21/50, Volumen"
     )
 
+    last_heartbeat = datetime.datetime.now()
+
     while True:
         try:
             analyze()
+            now = datetime.datetime.now()
+            if (now - last_heartbeat).seconds >= 86400:
+                price = get_btc_price()
+                send_telegram(
+                    f"💓 <b>Bot activo</b>\n\n"
+                    f"Sigo funcionando correctamente.\n"
+                    f"💰 BTC ahora: ${price:,.2f}\n"
+                    f"⏰ {now.strftime('%H:%M')}"
+                )
+                last_heartbeat = now
         except Exception as e:
             print(f"Error en análisis: {e}")
         time.sleep(CHECK_INTERVAL_MINUTES * 60)
-
-if __name__ == "__main__":
-    main()
