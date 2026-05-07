@@ -5,7 +5,8 @@ import datetime
 # ============================================================
 # CONFIGURACION - EDITÁ ESTOS VALORES
 # ============================================================
-TELEGRAM_TOKEN = "TELEGRAM_TOKEN"
+import os
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 CHAT_ID = "1867234680"
 CHECK_INTERVAL_MINUTES = 15  # cada cuántos minutos analiza
 # ============================================================
@@ -13,6 +14,7 @@ CHECK_INTERVAL_MINUTES = 15  # cada cuántos minutos analiza
 in_position = False
 buy_price = 0.0
 last_signal = ""
+last_heartbeat = datetime.datetime.now()
 
 def send_telegram(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
