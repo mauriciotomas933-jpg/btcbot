@@ -24,14 +24,14 @@ def send_telegram(message):
 
 def get_btc_price():
     try:
-        r = requests.get("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT", timeout=10)
-        return float(r.json()["price"])
+        r = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd", timeout=10)
+        return float(r.json()["bitcoin"]["usd"])
     except:
         return None
 
-def get_klines(interval="15m", limit=50):
+def get_klines(interval="15m", limit=60):
     try:
-        url = f"https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval={interval}&limit={limit}"
+        url = f"https://api.binance.us/api/v3/klines?symbol=BTCUSDT&interval={interval}&limit={limit}"
         r = requests.get(url, timeout=10)
         data = r.json()
         closes = [float(c[4]) for c in data]
