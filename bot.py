@@ -5,7 +5,7 @@ import datetime
 # ============================================================
 # CONFIGURACION - EDITÁ ESTOS VALORES
 # ============================================================
-TELEGRAM_TOKEN = "8599090146:AAHqfEr_dtJqbC8wn55MZOx2rUDQ_Wgy110"
+TELEGRAM_TOKEN = "TELEGRAM_TOKEN"
 CHAT_ID = "1867234680"
 CHECK_INTERVAL_MINUTES = 15  # cada cuántos minutos analiza
 # ============================================================
