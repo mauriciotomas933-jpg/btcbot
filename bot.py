@@ -27,8 +27,8 @@ def send_telegram(message):
 
 def get_btc_price():
     try:
-        r = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd", timeout=10)
-        return float(r.json()["bitcoin"]["usd"])
+        r = requests.get("https://api.binance.us/api/v3/ticker/price?symbol=BTCUSDT", timeout=10)
+        return float(r.json()["price"])
     except:
         return None
 
